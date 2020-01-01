@@ -12,7 +12,7 @@ alter sequence volleyballschema.person_id_seq restart with 42 increment by 3;
 
 CREATE TABLE volleyballschema.team (
  	id SERIAL PRIMARY KEY,
- 	team_name VARCHAR,
+ 	team_name VARCHAR not null,
  	place VARCHAR
 );
 
@@ -20,40 +20,40 @@ alter sequence volleyballschema.team_id_seq restart with 7 increment by 3;
 
 do $$ begin
 if not exists (select 1 from pg_catalog.pg_type where typname = 'player_position') then
-	create type volleyballschema.player_position as enum ('setter','middle_blocker',
-				'libero', 'outside', 'opposite');
+	create type volleyballschema.player_position as enum ('SETTER','MIDDLE_BLOCKER',
+				'LIBERO', 'OUTSIDE', 'OPPOSITE');
 end if;
 end $$;
 
 CREATE TABLE volleyballschema.player (
-	id INT REFERENCES volleyballschema.person(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+	person_id INT REFERENCES volleyballschema.person(id) ON UPDATE CASCADE ON DELETE RESTRICT,
 	jersey_number INT,
 	player_position volleyballschema.player_position,
 	height FLOAT,
 	weight FLOAT,
 	team_id INT REFERENCES volleyballschema.team(id),
 	active BOOLEAN,
-	PRIMARY KEY(id,team_id)
+	PRIMARY KEY(person_id,team_id)
 );
 
-CREATE INDEX id_player_index ON volleyballschema.player(id);
+CREATE INDEX id_player_index ON volleyballschema.player(person_id);
 CREATE INDEX team_id_player_index ON volleyballschema.player(team_id); 
 
 do $$ begin
 if not exists (select 1 from pg_catalog.pg_type where typname = 'title') then
-	create type volleyballschema.title as enum ('coach','manager','advisor');
+	create type volleyballschema.title as enum ('COACH','MANAGER','ADVISOR');
 end if;
 end $$;
 
 CREATE TABLE volleyballschema.management (
-	id INT REFERENCES volleyballschema.person(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+	person_id INT REFERENCES volleyballschema.person(id) ON UPDATE CASCADE ON DELETE RESTRICT,
 	title volleyballschema.title NOT NULL,
 	team_id INT REFERENCES volleyballschema.team(id),
 	active BOOLEAN,
-	PRIMARY KEY(id,team_id)
+	PRIMARY KEY(person_id,team_id)
 );
 
-CREATE INDEX id_management_index ON volleyballschema.management(id);
+CREATE INDEX id_management_index ON volleyballschema.management(person_id);
 CREATE INDEX team_id_management_index ON volleyballschema.management(team_id);
 
 CREATE TABLE volleyballschema.game (
@@ -69,7 +69,7 @@ alter sequence volleyballschema.game_id_seq restart with 29 increment by 3;
 
 do $$ begin
 if not exists (select 1 from pg_catalog.pg_type where typname = 'card_color') then
-	create type volleyballschema.card_color as enum ('yellow','red');
+	create type volleyballschema.card_color as enum ('YELLOW','RED');
 end if;
 end $$;
 
