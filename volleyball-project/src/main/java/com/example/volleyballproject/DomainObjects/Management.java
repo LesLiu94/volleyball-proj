@@ -17,11 +17,11 @@ public @Data class Management {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "management_id_seq")
-    private int id;
+    private Integer id;
 
     @Column(name = "person_id", insertable=false, updatable=false)
     @NotNull
-    private int personId;
+    private Integer personId;
 
     @Column(name = "title")
     @NotNull
@@ -29,7 +29,7 @@ public @Data class Management {
 
     @Column(name = "team_id", insertable=false, updatable=false)
     @NotNull
-    private int teamId;
+    private Integer teamId;
 
     @Column(name = "active")
     private boolean active;

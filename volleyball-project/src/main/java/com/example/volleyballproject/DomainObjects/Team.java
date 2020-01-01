@@ -16,12 +16,12 @@ public @Data class Team {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_id_seq")
-    int id;
+    private Integer id;
 
     @Column(name = "team_name")
     @NotNull
-    String teamName;
+    private String teamName;
 
     @Column(name = "place")
-    String place;
+    private String place;
 }

@@ -17,7 +17,7 @@ public @Data class Person {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_id_seq")
-    private int id;
+    private Integer id;
 
     @Column(name = "age")
     private int age;

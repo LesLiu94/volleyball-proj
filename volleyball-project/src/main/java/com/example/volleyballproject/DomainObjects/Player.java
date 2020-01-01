@@ -17,11 +17,11 @@ public @Data class Player {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_seq")
-    private int id;
+    private Integer id;
 
     @Column(name = "person_id", insertable=false, updatable=false)
     @NotNull
-    private int personId;
+    private Integer personId;
 
     @Column(name = "jersey_number")
     private int jerseyNumber;
@@ -38,7 +38,7 @@ public @Data class Player {
 
     @Column(name = "team_id", insertable=false, updatable=false)
     @NotNull
-    private int teamId;
+    private Integer teamId;
 
     @Column(name = "active")
     @NotNull

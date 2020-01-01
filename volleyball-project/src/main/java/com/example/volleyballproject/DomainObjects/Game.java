@@ -18,7 +18,7 @@ public @Data class Game {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_id_seq")
-    private int id;
+    private Integer id;
 
     @Column(name = "game_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -26,11 +26,11 @@ public @Data class Game {
 
     @Column(name = "winner", insertable=false, updatable=false)
     @NotNull
-    private int winnerID;
+    private Integer winnerID;
 
     @Column(name = "loser", insertable=false, updatable=false)
     @NotNull
-    private int loserID;
+    private Integer loserID;
 
     @Column(name = "win_points")
     private int winPoints;

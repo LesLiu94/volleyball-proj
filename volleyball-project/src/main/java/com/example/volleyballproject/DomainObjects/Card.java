@@ -17,18 +17,18 @@ public @Data class Card {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "card_id_seq")
-    private int id;
+    private Integer id;
 
     @Column(name = "color")
     private CardColor color;
 
     @Column(name = "person")
     @NotNull
-    private int personID;
+    private Integer personID;
 
     @Column(name = "game")
     @NotNull
-    private int gameID;
+    private Integer gameID;
 
     @Column(name = "reason")
     private String reason;
