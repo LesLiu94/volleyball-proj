@@ -24,15 +24,15 @@ public @Data class Person {
 
     @Column(name = "first_name")
     @NotNull
-    private String first_name;
+    private String firstName;
 
     @NotNull
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Player> players;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Player player;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Management> managements;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Management managements;
 }

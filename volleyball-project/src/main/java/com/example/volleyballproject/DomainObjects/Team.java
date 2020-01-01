@@ -20,7 +20,7 @@ public @Data class Team {
 
     @Column(name = "team_name")
     @NotNull
-    String team_name;
+    String teamName;
 
     @Column(name = "place")
     String place;

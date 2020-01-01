@@ -26,18 +26,17 @@ end if;
 end $$;
 
 CREATE TABLE volleyballschema.player (
+	id SERIAL PRIMARY KEY,
 	person_id INT REFERENCES volleyballschema.person(id) ON UPDATE CASCADE ON DELETE RESTRICT,
 	jersey_number INT,
 	player_position volleyballschema.player_position,
 	height FLOAT,
 	weight FLOAT,
-	team_id INT REFERENCES volleyballschema.team(id),
-	active BOOLEAN,
-	PRIMARY KEY(person_id,team_id)
+	team_id INT REFERENCES volleyballschema.team(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+	active BOOLEAN
 );
 
-CREATE INDEX id_player_index ON volleyballschema.player(person_id);
-CREATE INDEX team_id_player_index ON volleyballschema.player(team_id); 
+alter sequence volleyballschema.player_id_seq restart with 30 increment by 3;
 
 do $$ begin
 if not exists (select 1 from pg_catalog.pg_type where typname = 'title') then
@@ -46,15 +45,14 @@ end if;
 end $$;
 
 CREATE TABLE volleyballschema.management (
+	id SERIAL PRIMARY KEY,
 	person_id INT REFERENCES volleyballschema.person(id) ON UPDATE CASCADE ON DELETE RESTRICT,
 	title volleyballschema.title NOT NULL,
-	team_id INT REFERENCES volleyballschema.team(id),
-	active BOOLEAN,
-	PRIMARY KEY(person_id,team_id)
+	team_id INT REFERENCES volleyballschema.team(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+	active BOOLEAN
 );
 
-CREATE INDEX id_management_index ON volleyballschema.management(person_id);
-CREATE INDEX team_id_management_index ON volleyballschema.management(team_id);
+alter sequence volleyballschema.management_id_seq restart with 13 increment by 3;
 
 CREATE TABLE volleyballschema.game (
 	id SERIAL PRIMARY KEY,

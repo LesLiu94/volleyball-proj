@@ -1,5 +1,6 @@
 package com.example.volleyballproject.DomainObjects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,7 +21,8 @@ public @Data class Game {
     private int id;
 
     @Column(name = "game_date")
-    private Date game_date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date gameDate;
 
     @Column(name = "winner", insertable=false, updatable=false)
     @NotNull
@@ -31,10 +33,10 @@ public @Data class Game {
     private int loserID;
 
     @Column(name = "win_points")
-    private int win_points;
+    private int winPoints;
 
     @Column(name = "lose_points")
-    private int lose_points;
+    private int losePoints;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "winner", referencedColumnName = "id",

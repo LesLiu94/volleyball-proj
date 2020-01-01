@@ -1,6 +1,5 @@
 package com.example.volleyballproject.DomainObjects;
 
-import com.example.volleyballproject.CompositeKeys.PlayerAndManagementCompositeKey;
 import com.example.volleyballproject.Enums.PlayerPosition;
 import lombok.Data;
 
@@ -9,22 +8,27 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(schema = "volleyballschema", name = "player")
+@SequenceGenerator(name = "player_id_seq",
+        sequenceName = "player_id_seq",
+        schema = "volleyballschema")
 
 public @Data class Player {
 
-    @EmbeddedId
-    private PlayerAndManagementCompositeKey playerAndManagementCompositeKey;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_seq")
+    private int id;
 
     @Column(name = "person_id", insertable=false, updatable=false)
     @NotNull
-    private int person_id;
+    private int personId;
 
     @Column(name = "jersey_number")
-    private int jersey_number;
+    private int jerseyNumber;
 
     @Column(name = "player_position")
     @Enumerated(EnumType.STRING)
-    private PlayerPosition player_position;
+    private PlayerPosition playerPosition;
 
     @Column(name = "height")
     private double height;
@@ -34,20 +38,20 @@ public @Data class Player {
 
     @Column(name = "team_id", insertable=false, updatable=false)
     @NotNull
-    private int team_id;
+    private int teamId;
 
     @Column(name = "active")
     @NotNull
     private boolean active;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id", referencedColumnName = "id",
+    @JoinColumn(name = "personId", referencedColumnName = "id",
             insertable = false, updatable = false)
     @NotNull
     private Person person;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id", referencedColumnName = "id",
+    @JoinColumn(name = "teamId", referencedColumnName = "id",
             insertable = false, updatable = false)
     @NotNull
     private Team team;
