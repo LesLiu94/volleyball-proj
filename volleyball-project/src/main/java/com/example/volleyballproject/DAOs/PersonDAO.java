@@ -8,7 +8,10 @@ import java.util.List;
 
 @Repository
 public interface PersonDAO extends JpaRepository<Person, Long> {
+
     Person findById(Integer id);
+    List<Person> findByFirstName(String firstName);
+    List<Person> findByLastName(String lastName);
     List<Person> findByFirstNameAndLastName(String firstName, String lastName);
 
 }
