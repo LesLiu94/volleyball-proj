@@ -3,7 +3,6 @@ package com.example.volleyballproject.Services;
 import com.example.volleyballproject.DAOs.PersonDAO;
 import com.example.volleyballproject.DAOs.PlayerDAO;
 import com.example.volleyballproject.DAOs.TeamDAO;
-import com.example.volleyballproject.DTOs.PlayerSearchResult;
 import com.example.volleyballproject.DomainObjects.Team;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,7 +28,7 @@ public class TeamSearchByNameService {
     public List<Team> findTeamByTeamName(String teamName){
         logger.info("Finding team by team name.");
         List<Team> result = teamDAO.findByTeamName(teamName);
-        
+
         return result;
 
     }

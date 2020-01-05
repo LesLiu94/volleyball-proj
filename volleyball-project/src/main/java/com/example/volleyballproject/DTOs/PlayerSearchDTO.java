@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.util.List;
 
-public @Data class PlayerSearchResult {
+public @Data class PlayerSearchDTO {
 
     private Integer playerId;
     private String firstName;
@@ -15,6 +15,7 @@ public @Data class PlayerSearchResult {
     private PlayerPosition playerPosition;
     private double height;
     private double weight;
+    private int age;
     private String teamName;
     private boolean active;
     private List<Card> cards;

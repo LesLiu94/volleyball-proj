@@ -4,7 +4,7 @@ import com.example.volleyballproject.DAOs.CardDAO;
 import com.example.volleyballproject.DAOs.PersonDAO;
 import com.example.volleyballproject.DAOs.PlayerDAO;
 import com.example.volleyballproject.DAOs.TeamDAO;
-import com.example.volleyballproject.DTOs.PlayerSearchResult;
+import com.example.volleyballproject.DTOs.PlayerSearchDTO;
 import com.example.volleyballproject.DomainObjects.Card;
 import com.example.volleyballproject.DomainObjects.Person;
 import com.example.volleyballproject.DomainObjects.Player;
@@ -34,7 +34,7 @@ public class PlayerSearchByNameService {
     private final static Logger logger = LogManager.getLogger(PlayerSearchByNameService.class);
 
     //case for inputting a single name
-    public List<PlayerSearchResult> findPlayerByName(String name){
+    public List<PlayerSearchDTO> findPlayerByName(String name){
         logger.info("Finding player by a player name.");
         List<Person> foundBySingleName = personDAO.findByFirstName(name);
         foundBySingleName.addAll(personDAO.findByLastName(name));
@@ -43,52 +43,33 @@ public class PlayerSearchByNameService {
             return null;
         }
 
-        List<PlayerSearchResult> result = new ArrayList<>();
+        List<PlayerSearchDTO> result = new ArrayList<>();
 
-        if(foundBySingleName.size() == 1){
-            Person p = foundBySingleName.get(0);
+        for (Person p: foundBySingleName) {
             Player player = playerDAO.findById(p.getId());
             Team team = teamDAO.findByTeamId(player.getTeamId());
             List<Card> cards = cardDAO.findByPerson(p.getId());
-            PlayerSearchResult playerSearchResult = new PlayerSearchResult();
-            playerSearchResult.setPlayerId(player.getId());
-            playerSearchResult.setFirstName(p.getFirstName());
-            playerSearchResult.setLastName(p.getLastName());
-            playerSearchResult.setJerseyNumber(player.getJerseyNumber());
-            playerSearchResult.setPlayerPosition(player.getPlayerPosition());
-            playerSearchResult.setHeight(player.getHeight());
-            playerSearchResult.setWeight(player.getWeight());
-            playerSearchResult.setTeamName(team.getTeamName());
-            playerSearchResult.setActive(player.isActive());
-            playerSearchResult.setCards(cards);
+            PlayerSearchDTO playerSearchDTO = new PlayerSearchDTO();
+            playerSearchDTO.setPlayerId(player.getId());
+            playerSearchDTO.setFirstName(p.getFirstName());
+            playerSearchDTO.setLastName(p.getLastName());
+            playerSearchDTO.setJerseyNumber(player.getJerseyNumber());
+            playerSearchDTO.setPlayerPosition(player.getPlayerPosition());
+            playerSearchDTO.setHeight(player.getHeight());
+            playerSearchDTO.setWeight(player.getWeight());
+            playerSearchDTO.setAge(p.getAge());
+            playerSearchDTO.setTeamName(team.getTeamName());
+            playerSearchDTO.setActive(player.isActive());
+            playerSearchDTO.setCards(cards);
 
-            result.add(playerSearchResult);
-            return result;
+            result.add(playerSearchDTO);
+
         }
-
-        else {
-            //if multiple people match criteria, don't show height, weight, and cards
-            for (Person p: foundBySingleName) {
-                Player player = playerDAO.findById(p.getId());
-                Team team = teamDAO.findByTeamId(player.getTeamId());
-                PlayerSearchResult playerSearchResult = new PlayerSearchResult();
-                playerSearchResult.setPlayerId(player.getId());
-                playerSearchResult.setFirstName(p.getFirstName());
-                playerSearchResult.setLastName(p.getLastName());
-                playerSearchResult.setJerseyNumber(player.getJerseyNumber());
-                playerSearchResult.setPlayerPosition(player.getPlayerPosition());
-                playerSearchResult.setTeamName(team.getTeamName());
-                playerSearchResult.setActive(player.isActive());
-
-                result.add(playerSearchResult);
-
-            }
-            return result;
-        }
+        return result;
 
     }
     //case for inputting first and last name
-    public List<PlayerSearchResult> findPlayerByNames(String firstName, String lastName){
+    public List<PlayerSearchDTO> findPlayerByNames(String firstName, String lastName){
         logger.info("Finding player by player first name and player last name.");
         List<Person> people = personDAO.findByFirstNameAndLastName(firstName, lastName);
 
@@ -96,49 +77,28 @@ public class PlayerSearchByNameService {
             return null;
         }
 
-        List<PlayerSearchResult> result = new ArrayList<>();
+        List<PlayerSearchDTO> result = new ArrayList<>();
 
-        if(people.size() == 1){
-            Person p = people.get(0);
+        for (Person p: people) {
             Player player = playerDAO.findById(p.getId());
             Team team = teamDAO.findByTeamId(player.getTeamId());
             List<Card> cards = cardDAO.findByPerson(p.getId());
-            PlayerSearchResult playerSearchResult = new PlayerSearchResult();
-            playerSearchResult.setPlayerId(player.getId());
-            playerSearchResult.setFirstName(p.getFirstName());
-            playerSearchResult.setLastName(p.getLastName());
-            playerSearchResult.setJerseyNumber(player.getJerseyNumber());
-            playerSearchResult.setPlayerPosition(player.getPlayerPosition());
-            playerSearchResult.setHeight(player.getHeight());
-            playerSearchResult.setWeight(player.getWeight());
-            playerSearchResult.setTeamName(team.getTeamName());
-            playerSearchResult.setActive(player.isActive());
-            playerSearchResult.setCards(cards);
+            PlayerSearchDTO playerSearchDTO = new PlayerSearchDTO();
+            playerSearchDTO.setPlayerId(player.getId());
+            playerSearchDTO.setFirstName(p.getFirstName());
+            playerSearchDTO.setLastName(p.getLastName());
+            playerSearchDTO.setJerseyNumber(player.getJerseyNumber());
+            playerSearchDTO.setPlayerPosition(player.getPlayerPosition());
+            playerSearchDTO.setHeight(player.getHeight());
+            playerSearchDTO.setWeight(player.getWeight());
+            playerSearchDTO.setAge(p.getAge());
+            playerSearchDTO.setTeamName(team.getTeamName());
+            playerSearchDTO.setActive(player.isActive());
+            playerSearchDTO.setCards(cards);
 
-            result.add(playerSearchResult);
-            return result;
+            result.add(playerSearchDTO);
         }
-
-        else{
-            //if multiple people match criteria, don't show height, weight, and cards
-            for (Person p: people) {
-                Player player = playerDAO.findById(p.getId());
-                Team team = teamDAO.findByTeamId(player.getTeamId());
-                PlayerSearchResult playerSearchResult = new PlayerSearchResult();
-                playerSearchResult.setPlayerId(player.getId());
-                playerSearchResult.setFirstName(p.getFirstName());
-                playerSearchResult.setLastName(p.getLastName());
-                playerSearchResult.setJerseyNumber(player.getJerseyNumber());
-                playerSearchResult.setPlayerPosition(player.getPlayerPosition());
-                playerSearchResult.setTeamName(team.getTeamName());
-                playerSearchResult.setActive(player.isActive());
-
-                result.add(playerSearchResult);
-
-            }
-            return result;
-        }
-
+        return result;
     }
 
 }

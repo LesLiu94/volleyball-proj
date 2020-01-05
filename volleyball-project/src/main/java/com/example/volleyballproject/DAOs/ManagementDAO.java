@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface ManagementDAO extends JpaRepository<Management, Long> {
     Management findById(Integer id);
+    List<Management> findByTeamId(Integer teamId);
     List<Management> findByTitle(Title title);
 }

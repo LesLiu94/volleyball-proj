@@ -1,12 +1,10 @@
 package com.example.volleyballproject.Services;
 
-import com.example.volleyballproject.DAOs.PersonDAO;
-import com.example.volleyballproject.DAOs.PlayerDAO;
-import com.example.volleyballproject.DAOs.TeamDAO;
-import com.example.volleyballproject.DTOs.PlayerSearchResult;
-import com.example.volleyballproject.DomainObjects.Person;
-import com.example.volleyballproject.DomainObjects.Player;
-import com.example.volleyballproject.DomainObjects.Team;
+import com.example.volleyballproject.DAOs.*;
+import com.example.volleyballproject.DTOs.ManagementDTO;
+import com.example.volleyballproject.DTOs.PlayerSearchDTO;
+import com.example.volleyballproject.DTOs.TeamDTO;
+import com.example.volleyballproject.DomainObjects.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,31 +23,64 @@ public class TeamSearchByTeamIdService {
     @Autowired
     private PlayerDAO playerDAO;
     @Autowired
+    private ManagementDAO managementDAO;
+    @Autowired
     private TeamDAO teamDAO;
+    @Autowired
+    private CardDAO cardDAO;
 
     private final static Logger logger = LogManager.getLogger(TeamSearchByTeamIdService.class);
 
-    public List<PlayerSearchResult> findTeamPlayersByTeamId(Integer teamId){
-        List<Player> teamPlayers = playerDAO.findByTeamId(teamId);
-        List<PlayerSearchResult> result = new ArrayList<>();
+    public TeamDTO findTeamPlayersByTeamId(Integer teamId){
+        //grab all tuples from Management table with the corresponding teamId
+        List<Management> managementList = managementDAO.findByTeamId(teamId);
+        //grab all tuples from Player table with the corresponding teamId
+        List<Player> playerList = playerDAO.findByTeamId(teamId);
+        //grab the team name from the tuple from Team table with the corresponding teamId
+        String teamName = teamDAO.findByTeamId(teamId).getTeamName();
 
-        for (Player p: teamPlayers) {
+        List<PlayerSearchDTO> playerResult = new ArrayList<>();
+        List<ManagementDTO> managementResult = new ArrayList<>();
+
+        //for every Management object, make sure active is true and populate relevant fields
+        for(Management m: managementList){
+            if(m.isActive()){
+                ManagementDTO managementDTO = new ManagementDTO();
+                Person person = personDAO.findById(m.getPersonId());
+                managementDTO.setManagementID(m.getId());
+                managementDTO.setFirstName(person.getFirstName());
+                managementDTO.setLastName(person.getLastName());
+                managementDTO.setTitle(m.getTitle());
+                managementDTO.setAge(person.getAge());
+                managementDTO.setTeamName(teamName);
+                managementDTO.setActive(true);
+                managementResult.add(managementDTO);
+            }
+        }
+
+        //for every Player object, make sure active is true and populate relevant fields
+        for (Player p: playerList) {
             if(p.isActive()){
-                PlayerSearchResult playerSearchResult = new PlayerSearchResult();
+                PlayerSearchDTO playerSearchDTO = new PlayerSearchDTO();
                 Person person = personDAO.findById(p.getPersonId());
-                Team team = teamDAO.findByTeamId(p.getTeamId());
-                playerSearchResult.setPlayerId(p.getId());
-                playerSearchResult.setFirstName(person.getFirstName());
-                playerSearchResult.setLastName(person.getLastName());
-                playerSearchResult.setTeamName(team.getTeamName());
-                playerSearchResult.setJerseyNumber(p.getJerseyNumber());
-                playerSearchResult.setPlayerPosition(p.getPlayerPosition());
-                playerSearchResult.setActive(p.isActive());
-                result.add(playerSearchResult);
+                List<Card> cards = cardDAO.findByPerson(p.getPersonId());
+                playerSearchDTO.setPlayerId(p.getId());
+                playerSearchDTO.setFirstName(person.getFirstName());
+                playerSearchDTO.setLastName(person.getLastName());
+                playerSearchDTO.setTeamName(teamName);
+                playerSearchDTO.setJerseyNumber(p.getJerseyNumber());
+                playerSearchDTO.setPlayerPosition(p.getPlayerPosition());
+                playerSearchDTO.setCards(cards);
+                playerSearchDTO.setActive(true);
+                playerResult.add(playerSearchDTO);
             }
 
         }
 
+        TeamDTO result = new TeamDTO();
+        result.setTeamId(teamId);
+        result.setPlayers(playerResult);
+        result.setManagement(managementResult);
         return result;
     }
 }
