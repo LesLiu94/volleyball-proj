@@ -36,9 +36,10 @@ public class PlayerSearchByIdService {
 
         logger.info("Finding player by player id.");
         Player player = playerDAO.findById(playerId);
-        Person person = personDAO.findById(player.getPersonId());
-        Team team = teamDAO.findByTeamId(player.getTeamId());
-        List<Card> cards = cardDAO.findByPerson(player.getPersonId());
+        int personId = player.getPerson().getId();
+        Person person = personDAO.findById(personId);
+        Team team = teamDAO.findById(player.getTeam().getId());
+        List<Card> cards = cardDAO.findByPerson(personId);
 
         PlayerSearchDTO playerSearchDTO = new PlayerSearchDTO();
         playerSearchDTO.setPlayerId(playerId);

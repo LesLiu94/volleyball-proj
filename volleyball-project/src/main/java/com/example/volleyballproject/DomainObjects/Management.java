@@ -19,17 +19,9 @@ public @Data class Management {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "management_id_seq")
     private Integer id;
 
-    @Column(name = "person_id", insertable=false, updatable=false)
-    @NotNull
-    private Integer personId;
-
     @Column(name = "title")
     @NotNull
     private Title title;
-
-    @Column(name = "team_id", insertable=false, updatable=false)
-    @NotNull
-    private Integer teamId;
 
     @Column(name = "active")
     private boolean active;

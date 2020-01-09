@@ -37,7 +37,7 @@ public class TeamSearchByTeamIdService {
         //grab all tuples from Player table with the corresponding teamId
         List<Player> playerList = playerDAO.findByTeamId(teamId);
         //grab the team name from the tuple from Team table with the corresponding teamId
-        String teamName = teamDAO.findByTeamId(teamId).getTeamName();
+        String teamName = teamDAO.findById(teamId).getTeamName();
 
         List<PlayerSearchDTO> playerResult = new ArrayList<>();
         List<ManagementDTO> managementResult = new ArrayList<>();
@@ -46,7 +46,7 @@ public class TeamSearchByTeamIdService {
         for(Management m: managementList){
             if(m.isActive()){
                 ManagementDTO managementDTO = new ManagementDTO();
-                Person person = personDAO.findById(m.getPersonId());
+                Person person = personDAO.findById(m.getPerson().getId());
                 managementDTO.setManagementID(m.getId());
                 managementDTO.setFirstName(person.getFirstName());
                 managementDTO.setLastName(person.getLastName());
@@ -62,8 +62,9 @@ public class TeamSearchByTeamIdService {
         for (Player p: playerList) {
             if(p.isActive()){
                 PlayerSearchDTO playerSearchDTO = new PlayerSearchDTO();
-                Person person = personDAO.findById(p.getPersonId());
-                List<Card> cards = cardDAO.findByPerson(p.getPersonId());
+                int personId = p.getPerson().getId();
+                Person person = personDAO.findById(personId);
+                List<Card> cards = cardDAO.findByPerson(personId);
                 playerSearchDTO.setPlayerId(p.getId());
                 playerSearchDTO.setFirstName(person.getFirstName());
                 playerSearchDTO.setLastName(person.getLastName());

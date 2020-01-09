@@ -19,10 +19,6 @@ public @Data class Player {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_id_seq")
     private Integer id;
 
-    @Column(name = "person_id", insertable=false, updatable=false)
-    @NotNull
-    private Integer personId;
-
     @Column(name = "jersey_number")
     private int jerseyNumber;
 
@@ -35,10 +31,6 @@ public @Data class Player {
 
     @Column(name = "weight")
     private double weight;
-
-    @Column(name = "team_id", insertable=false, updatable=false)
-    @NotNull
-    private Integer teamId;
 
     @Column(name = "active")
     @NotNull

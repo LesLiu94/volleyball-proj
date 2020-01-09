@@ -47,7 +47,7 @@ public class PlayerSearchByNameService {
 
         for (Person p: foundBySingleName) {
             Player player = playerDAO.findById(p.getId());
-            Team team = teamDAO.findByTeamId(player.getTeamId());
+            Team team = teamDAO.findById(player.getTeam().getId());
             List<Card> cards = cardDAO.findByPerson(p.getId());
             PlayerSearchDTO playerSearchDTO = new PlayerSearchDTO();
             playerSearchDTO.setPlayerId(player.getId());
@@ -81,7 +81,7 @@ public class PlayerSearchByNameService {
 
         for (Person p: people) {
             Player player = playerDAO.findById(p.getId());
-            Team team = teamDAO.findByTeamId(player.getTeamId());
+            Team team = teamDAO.findById(player.getTeam().getId());
             List<Card> cards = cardDAO.findByPerson(p.getId());
             PlayerSearchDTO playerSearchDTO = new PlayerSearchDTO();
             playerSearchDTO.setPlayerId(player.getId());

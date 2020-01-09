@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface TeamDAO extends JpaRepository<Team, Long> {
-    Team findByTeamId(Integer id);
+    Team findById(Integer id);
     List<Team> findByTeamName(String teamName);
 }
